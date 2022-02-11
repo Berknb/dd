@@ -1,0 +1,15 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+    width: 100%;
+    height: 90%;
+
+    .formElements{
+        display: flex;
+        align-items: center;
+        width: 15rem;
+        justify-content: space-evenly;
+    }
+}
+ 
