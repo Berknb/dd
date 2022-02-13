@@ -5,12 +5,13 @@ import { getAuth,createUserWithEmailAndPassword, onAuthStateChanged, signOut, si
 
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyA-Chsud4empxGtLUmX8DRFQjf1VRBUUYM",
+  authDomain: "dailydiary-70d06.firebaseapp.com",
+  databaseURL: "https://dailydiary-70d06-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "dailydiary-70d06",
+  storageBucket: "dailydiary-70d06.appspot.com",
+  messagingSenderId: "451684633355",
+  appId: "1:451684633355:web:a9b800837b647bb85a300e"
 }
 
  // Initialize Firebase
