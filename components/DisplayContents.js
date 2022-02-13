@@ -76,8 +76,6 @@ useEffect(() => {
     }else{
         postData = <div className={Classes.NoPostsContainer}>
                      <p>There are no posts yet... </p>
-                     <iframe src="https://giphy.com/embed/pOZhmE42D1WrCWATLK" width="480" height="480" frameBorder="0" style={{pointerEvents:"none"}}></iframe>
-                     <small><a href="https://giphy.com/gifs/animation-work-job-pOZhmE42D1WrCWATLK">via GIPHY</a></small>
                      <section onClick={() => {setPopup(true)}}>
                      <p>Write something now!</p>
                         <BsPencilSquare size={30}/> 
