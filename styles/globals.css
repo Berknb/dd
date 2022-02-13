@@ -195,5 +195,14 @@ textarea:focus,
   100% {
     opacity: 1;
   }
-  /* Post content css end */
+}
+/* Post content css end */
+
+@media screen and (max-width:950px){
+textarea.question:focus + label > span,
+textarea.question:valid + label > span {
+  top: -420px;
+  font-size: 22px;
+  color: #333;
+}
 }

@@ -47,7 +47,7 @@ setLoading(false)
                     <button type="submit" disabled={loading || currentUser} onClick={handleLogin}>
                         Giriş yap
                     </button>
-                    <label onClick={SignGoogle} className={Classes.google}><FcGoogle size={30}/>Google hesabın ile giriş yap</label>
+                    <label onClick={SignGoogle} className={Classes.google}><FcGoogle size={30}/>Google ile devam et</label>
                     {/* <button type="submit" disabled={!currentUser} onClick={handleLogout}>
                         Log out 
                     </button> */}

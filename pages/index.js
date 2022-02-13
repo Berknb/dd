@@ -2,6 +2,7 @@ import Head from 'next/head'
 import DisplayContents from '../components/DisplayContents'
 
 export default function Home() {
+  
   return (
     <div>
       <Head>

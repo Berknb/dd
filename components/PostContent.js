@@ -41,18 +41,25 @@ const PostContent = () => {
             body: JSON.stringify(post)
         })
             dispatch(postAdded())
-            // firestore user
-            if(currentUser?.email !== undefined){
-                const sourceData = {
-                    ...post
-                }
-                setDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${sourceData.id}`), {
-                    id: `${sourceData.id}`,
-                    title: `${sourceData.title}`,
-                    content: `${sourceData.content}`,
-                  });
-            } 
         } 
+    }
+    // firestore submit with username
+    function userSubmit(){
+        if(currentUser?.email !== undefined){
+            let sourceData = {
+                id: Math.random(),
+                content: postContent,
+                title: postTitle,
+            }
+            setDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${sourceData.id}`), {
+                id: `${sourceData.id}`,
+                title: `${sourceData.title}`,
+                content: `${sourceData.content}`,
+              });
+              dispatch(postAdded())
+        }else{
+            alert("Önce giriş yapmanız gerek!")
+        }
     }
     return (
     <React.Fragment>
@@ -60,9 +67,9 @@ const PostContent = () => {
         <input type="text" name="name" id='nme' required autoComplete='off' className='question' onChange={e => setTitle(e.target.value)}/>
            <label htmlFor='nme'><span>What&apos;s your title:</span></label>
            <textarea name="content" id='msg' required autoComplete='off' className='question'  onChange={e => setContent(e.target.value)}/>
-           <label htmlFor='msg'><span>What you wanna share:</span></label>
+           <label htmlFor='msg'><span>Share your thinks:</span></label>
             <input type="submit" value="Anonim olarak paylaş"/> 
-            <p className='userSubmit' style={{fontSize:"15px"}}>Kullanıcı adın ile paylaş</p> 
+            <p className='userSubmit' onClick={userSubmit} style={{fontSize:"15px"}}>Kullanıcı adın ile paylaş</p> 
         </form> 
     </React.Fragment>
   );

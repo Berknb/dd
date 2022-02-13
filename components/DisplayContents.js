@@ -57,9 +57,6 @@ useEffect(() => {
    },[postAdded])
 // ------------------------------- Display posts ---------------------
     let postData;
-    console.log(allPosts.map(post => {
-        console.log(post.title)
-    }))
     if(allPosts.length > 0) {
         postData = <div className={Classes.PostsContainer}>
                     {
@@ -89,7 +86,7 @@ useEffect(() => {
     if(loading === true){return <p>Loading...</p>}
     
     return (
-    <div className={Classes.MainContainer}>
+    <div>
         {postData}
     </div>
   );

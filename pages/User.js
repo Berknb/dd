@@ -7,7 +7,8 @@ import {RiChatDeleteFill} from 'react-icons/ri'
 import {FiEdit} from 'react-icons/fi'
 
 export default function User() {
-  const indexedDB = new Dexie("ReactDexie");
+  
+    const indexedDB = new Dexie("ReactDexie");
     //create the database store
     indexedDB.version(1).stores({
         posts: "id, title, content"
@@ -15,6 +16,7 @@ export default function User() {
     indexedDB.open().catch((err) => {
         console.log(err.stack || err)
     })
+
     //set the posts
     const [posts, setPosts] = useState("");
 
@@ -48,7 +50,7 @@ useEffect(() => {
   if (Loading === true) {
     return <p>Loading...</p>
   }
-
+if(data.length > 0){
   return (
     <div className={Classes.PostsContainer}>
       {data.map(item=>(
@@ -56,15 +58,20 @@ useEffect(() => {
         <h2>{item.title}</h2>
         <p>{item.content}</p>
         <section>
-        <span>
           <FiEdit size={30}/>
-        </span>
-          <span>
-            <RiChatDeleteFill size={30} onClick={() => {deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`)),deletePost(item.id),setRemove(remove+1)}}/>
-          </span>
+          <RiChatDeleteFill size={30} onClick={() => {deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`)),deletePost(item.id),setRemove(remove+1)}}/>
         </section>
     </div> 
       ))}
     </div>
   )
+}else{
+  return(
+    <div className={Classes.noPostContainer}>
+      <p>Henüz bir paylaşımın yok</p>
+      <iframe src="https://giphy.com/embed/pOZhmE42D1WrCWATLK" width="480" height="480" frameBorder="0" style={{pointerEvents:"none"}}></iframe>
+    </div>
+  )
+}
+  
 }
