@@ -3,16 +3,19 @@ import { useDispatch } from 'react-redux'
 import { postAdded } from '../states/PostSlice';
 import Dexie from "dexie";
 import Classes from './styles/PostContent.module.scss'
+import { useAuth,db } from "../initFirebase"
+import { doc, setDoc } from 'firebase/firestore'
 
 const PostContent = () => {
+    const currentUser = useAuth();
     const dispatch = useDispatch()
     //set the database 
-    const db = new Dexie("ReactDexie");
+    const indexedDb = new Dexie("ReactDexie");
     //create the database store
-    db.version(1).stores({
+    indexedDb.version(1).stores({
         posts: "id, title, content"
     })
-    db.open().catch((err) => {
+    indexedDb.open().catch((err) => {
         console.log(err.stack || err)
     })
     
@@ -22,6 +25,7 @@ const PostContent = () => {
 
     //submit 
     const getPostInfo = (e) => {
+        //---------- indexedDB -------------
         e.preventDefault();
         if(postTitle && postContent){
             let post = {
@@ -30,8 +34,24 @@ const PostContent = () => {
                 title: postTitle,
             }
            
-            db.posts.add(post)
+            indexedDb.posts.add(post)
+            //---------------- firebase ---------
+            fetch("https://dailydiary-70d06-default-rtdb.europe-west1.firebasedatabase.app/AllPosts.json",{
+            method: "POST",
+            body: JSON.stringify(post)
+        })
             dispatch(postAdded())
+            // firestore user
+            if(currentUser?.email !== undefined){
+                const sourceData = {
+                    ...post
+                }
+                setDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${sourceData.id}`), {
+                    id: `${sourceData.id}`,
+                    title: `${sourceData.title}`,
+                    content: `${sourceData.content}`,
+                  });
+            } 
         } 
     }
     return (
@@ -41,7 +61,8 @@ const PostContent = () => {
            <label htmlFor='nme'><span>What&apos;s your title:</span></label>
            <textarea name="content" id='msg' required autoComplete='off' className='question'  onChange={e => setContent(e.target.value)}/>
            <label htmlFor='msg'><span>What you wanna share:</span></label>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Anonim olarak paylaş"/> 
+            <p className='userSubmit' style={{fontSize:"15px"}}>Kullanıcı adın ile paylaş</p> 
         </form> 
     </React.Fragment>
   );

@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import DisplayContents from '../components/DisplayContents'
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
       </Head>
 
       <main>
-       
+      <DisplayContents/>
       </main>
 
       <footer>

@@ -2,18 +2,48 @@ import Image from "next/image"
 import logo from '../images/ddLogo.png'
 import Classes from './styles/Navbar.module.scss'
 import { useRouter } from "next/router"
+import { useAuth,logout } from "../initFirebase"
+import { useState } from "react"
+import {ImExit} from 'react-icons/im'
+import {BiUserCircle} from 'react-icons/bi'
+import {BsPencilSquare} from 'react-icons/bs'
+import Popup from './Popup'
+
 
 export default function Navbar() {
+  const [popup,setPopup] = useState(false);
+    const currentUser = useAuth();
     const router = useRouter();
   return (
     <div className={Classes.container}>
-        <span className={Classes.logo}>
+        <span className={Classes.logo} onClick={()=>router.push("/")}>
            <Image src={logo} alt="dd logo" width={378} height={150}/> 
         </span>
-        <section className={Classes.searchBar}>
-            <p>searchbar</p>
-            <label>Giriş yap</label>
+        <section className={Classes.shareBtn} onClick={() => {setPopup(true)}}>
+          <BsPencilSquare size={30}/>
+          <label>Hikayeni paylaş</label>
         </section>
+        <Popup trigger={popup} setTrigger={setPopup}/>
+        {currentUser?.email == undefined ? 
+            <label onClick={()=>router.push("/SignIn")}>Giriş yap</label>
+            :
+            <div className={Classes.userPanel}>
+              <p>Hoşgeldin {currentUser?.email.split('@')[0]} !</p>
+              <span>
+                <BiUserCircle size={30} onClick={()=>{
+                  router.push("/User")
+                }}/>
+              </span>
+              <span>
+                <ImExit size={25} onClick={()=>{
+              logout()
+              router.push("/")
+            }}/>
+            </span>
+              
+            </div>
+            
+          }
     </div>
   )
 }

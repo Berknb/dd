@@ -121,8 +121,27 @@ input[type="submit"] {
   padding: 10px;
   cursor: pointer;
   position: absolute;
-  bottom: 30px;
+  bottom: 10px;
   right: -10px;
+  width: 100%;
+  border-radius: 12px;
+  background-color: #F29765;
+  color: #F6F6F6;
+  font-size: 15px;
+}
+.userSubmit{
+  font-family: 'Ubuntu', sans-serif;
+  border: none;
+  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 60px;
+  right: 0;
   width: 100%;
   border-radius: 12px;
   background-color: #F29765;
@@ -137,13 +156,23 @@ input[type="submit"]:hover {
 input[type="submit"]:active {
   background: #999;
 }
+.userSubmit:hover{
+  background: #EEE;
+  color: #333;
+}
+.userSubmit:active{
+  background: #999;
+}
 
-input.question:valid ~ input[type="submit"], textarea.question:valid ~ input[type="submit"] {
+input.question:valid ~ input[type="submit"],.userSubmit, textarea.question:valid ~ input[type="submit"],.userSubmit {
   -webkit-animation: appear 1s forwards;
   animation: appear 1s forwards;
 }
 
 input.question:invalid ~ input[type="submit"], textarea.question:invalid ~ input[type="submit"] {
+  display: none;
+}
+input.question:invalid ~ .userSubmit, textarea.question:invalid ~ .userSubmit {
   display: none;
 }
 textarea.question{
