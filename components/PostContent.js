@@ -5,15 +5,21 @@ import Dexie from "dexie";
 import Classes from './styles/PostContent.module.scss'
 import { useAuth,db } from "../initFirebase"
 import { doc, setDoc } from 'firebase/firestore'
+import { useRouter } from "next/router"
 
 const PostContent = () => {
-    const currentUser = useAuth();
-    const dispatch = useDispatch()
+    const dateInfo = new Date();
+    const date = dateInfo.getDate()+'/'+(dateInfo.getMonth()+1)+'/'+dateInfo.getFullYear();
+
+    const router = useRouter();
+    const currentUser = useAuth();   //to get current user name
+    const dispatch = useDispatch(); // close popup
+
     //set the database 
     const indexedDb = new Dexie("ReactDexie");
     //create the database store
     indexedDb.version(1).stores({
-        posts: "id, title, content"
+        posts: "id, title, content, bloggerName"
     })
     indexedDb.open().catch((err) => {
         console.log(err.stack || err)
@@ -23,7 +29,8 @@ const PostContent = () => {
     const [postTitle, setTitle] = useState("");
     const [postContent, setContent] = useState("");
 
-    //submit 
+
+    // anonymous submit
     const getPostInfo = (e) => {
         //---------- indexedDB -------------
         e.preventDefault();
@@ -32,14 +39,26 @@ const PostContent = () => {
                 id: Math.random(),
                 content: postContent,
                 title: postTitle,
+                bloggername: "anonim",
+                date: date
             }
            
             indexedDb.posts.add(post)
-            //---------------- firebase ---------
-            fetch("https://dailydiary-70d06-default-rtdb.europe-west1.firebasedatabase.app/AllPosts.json",{
-            method: "POST",
-            body: JSON.stringify(post)
-        })
+            
+            let sourceData = {
+                id: Math.random(),
+                content: postContent,
+                title: postTitle,
+                bloggername:"anonim",
+                date: date
+            }
+            setDoc(doc(db, "allPosts", `${sourceData.id}`), {
+                id: sourceData.id,
+                title: sourceData.title,
+                content: sourceData.content,
+                bloggername: sourceData.bloggername,
+                date: sourceData.date
+              });
             dispatch(postAdded())
         } 
     }
@@ -50,15 +69,28 @@ const PostContent = () => {
                 id: Math.random(),
                 content: postContent,
                 title: postTitle,
+                date: date
+                
             }
             setDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${sourceData.id}`), {
-                id: `${sourceData.id}`,
-                title: `${sourceData.title}`,
-                content: `${sourceData.content}`,
+                id: sourceData.id,
+                title: sourceData.title,
+                content: sourceData.content,
+                bloggername: `${currentUser?.email.split("@")[0]}`,
+                date: sourceData.date
+              });
+              setDoc(doc(db, "allPosts", `${sourceData.id}`), {
+                id: sourceData.id,
+                title: sourceData.title,
+                content: sourceData.content,
+                bloggername: `${currentUser?.email.split("@")[0]}`,
+                date: sourceData.date
               });
               dispatch(postAdded())
         }else{
             alert("Önce giriş yapmanız gerek!")
+            router.push("/SignIn")
+            dispatch(postAdded())
         }
     }
     return (

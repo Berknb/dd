@@ -39,7 +39,7 @@ textarea.question {
   border-radius: 2px;
   margin: 0;
   border: none;
-  width: 80%;
+  width: 100%;
   background: rgba(0, 0, 0, 0);
   transition: padding-top 0.2s ease, margin-top 0.2s ease;
   overflow-x: hidden; /* Hack to make "rows" attribute apply in Firefox. */
@@ -62,7 +62,7 @@ textarea.question + label {
 
 input.question:focus + label,
 textarea.question:focus + label {
-  width: 80%;
+  width: 100%;
 }
 
 input.question:focus,

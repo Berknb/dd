@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    padding: 15px;
+    padding: 10px;
 
     .post{
         display: flex;
@@ -24,13 +24,19 @@
         width: 30%;
         height: 30rem;
         margin-bottom: 2rem;
+        padding: 15px;
         background-color: white;border-radius: 6px;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    section{
+    p{
+        height: 50%;
+        overflow: auto;
+    }
+    .editItems{
         width: 50%;
         display: flex;
         justify-content: space-between;
         margin-bottom: 3rem;
+        cursor: pointer;
     }
 }
 @media screen and (max-width:950px){

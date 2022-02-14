@@ -4,65 +4,73 @@ import Dexie from "dexie";
 import Classes from './styles/DisplayContent.module.scss'
 import Popup from './Popup'
 import {BsPencilSquare} from 'react-icons/bs'
+import { doc,deleteDoc, getDocs,collection } from "firebase/firestore";
+import { useAuth,db } from '../initFirebase';
 
 const DisplayContent = () => {
     const postAdded = useSelector((state) => state.postAdded.value)
     const [allPosts,setAllPosts] = useState([]);
     const [popup,setPopup] = useState(false);
     const [loading,setLoading] = useState(true);
+    const currentUser = useAuth();
 
-    //set the database 
-    const indexedDB = new Dexie("ReactDexie");
-    //create the database store
-    indexedDB.version(1).stores({
-        posts: "id, title, content"
-    })
-    indexedDB.open().catch((err) => {
-        console.log(err.stack || err)
-    })
+//     //set the database 
+//     const indexedDB = new Dexie("ReactDexie");
+//     //create the database store
+//     indexedDB.version(1).stores({
+//         posts: "id, title, content"
+//     })
+//     indexedDB.open().catch((err) => {
+//         console.log(err.stack || err)
+//     })
     
-    //set the state and property
-    const [posts, setPosts] = useState("");
+//     //set the state and property
+//     const [posts, setPosts] = useState("");
 
-    //set the posts
-    const deletePost = async(id) => {
-        indexedDB.posts.delete(id);
-        let allPosts = await indexedDB.posts.toArray();
-        setPosts(allPosts);
-    } 
-//get all posts from the indexedDB
-    useEffect(() => {
-        const getPosts = async() => {
-            let allPosts = await indexedDB.posts.toArray();
-            setPosts(allPosts);
-        }
-        getPosts();
-        setLoading(false);
-    }, [postAdded])
+//     //set the posts
+//     const deletePost = async(id) => {
+//         indexedDB.posts.delete(id);
+//         let allPosts = await indexedDB.posts.toArray();
+//         setPosts(allPosts);
+//     } 
+// //get all posts from the indexedDB
+//     useEffect(() => {
+//         const getPosts = async() => {
+//             let allPosts = await indexedDB.posts.toArray();
+//             setPosts(allPosts);
+//         }
+//         getPosts();
+//         setLoading(false);
+//     }, [postAdded])
 //--------------- get posts from firestore ----------------
+const [data,setData] = useState([]);
 useEffect(() => {
-    fetch("https://dailydiary-70d06-default-rtdb.europe-west1.firebasedatabase.app/AllPosts.json").then((response) => {return response.json()}).then(data => {
-      const postsData = [];
-    
-      for (const key in data){
-        const postData = {
-          id: key,
-          ...data[key]
-        }
-        postsData.push(postData);
-      }
-      setLoading(false)
-      setAllPosts(postsData)
-     })
-   },[postAdded])
+  const posts = [];
+  const colRef = collection(db, "allPosts")
+  getDocs(colRef).then((snapshot) => {
+    snapshot.docs.forEach((doc) => {
+      posts.push({ ...doc.data(), id: doc.id })
+    })
+    setData(posts)
+    setLoading(false)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+},[currentUser?.email,postAdded])
+
 // ------------------------------- Display posts ---------------------
     let postData;
-    if(allPosts.length > 0) {
+    if(data.length > 0) {
         postData = <div className={Classes.PostsContainer}>
-                    {
-                        allPosts.map(post => {
+                    { 
+                        data.map(post => {
                              return (
                              <div key={post.id} className={Classes.post}>
+                               <div className={Classes.author}>
+                                  <label><strong>Yazar: </strong>{post.bloggername}</label>
+                                  <strong>{post.date}</strong>
+                                </div>
                                 <h2>{post.title}</h2>
                                 <p>{post.content}</p>
                             </div> 

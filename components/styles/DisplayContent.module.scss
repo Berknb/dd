@@ -1,3 +1,5 @@
+@import '../../styles/globalVariables.scss';
+
 .NoPostsContainer{
     display: flex;
     flex-direction: column;
@@ -24,12 +26,23 @@
         align-items: center;
         width: 45%;
         background-color: white;border-radius: 6px;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);margin-bottom: 2rem;padding: 2rem;
-        max-height: 40rem;
-        overflow-y: hidden;
+        max-height: 30rem;
+        position: relative;
+        overflow: hidden;
+        
         p{
-            font-size: 20px;
+            opacity: .80; 
         }
+
         h2{
+            border-bottom: 1px solid red;
+        }
+        .author{
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid black;
             border-bottom: 1px solid black;
         }
     }
@@ -68,13 +81,14 @@
             padding: 15px;
             h2{
                 border: none;
+                font-size: 17px;
             }
 
-            
             p{
                 font-size: 16px;
                 display: none;
             }
+            
             
         }
     }

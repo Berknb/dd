@@ -1,12 +1,16 @@
-import { useEffect,useState } from 'react'
+import { useEffect,useState} from 'react'
 import { useAuth,db } from '../initFirebase';
 import Classes from '../styles/User.module.scss'
 import Dexie from 'dexie';
 import { doc,deleteDoc, getDocs,collection } from "firebase/firestore";
 import {RiChatDeleteFill} from 'react-icons/ri'
 import {FiEdit} from 'react-icons/fi'
+import PopupEdit from '../components/PopupEdit';
 
 export default function User() {
+    const [popup,setPopup] = useState(false);
+    const [page,setPage] = useState(0);
+    const itemPage = -1;
   
     const indexedDB = new Dexie("ReactDexie");
     //create the database store
@@ -57,10 +61,15 @@ if(data.length > 0){
         <div key={item.id} className={Classes.post}>
         <h2>{item.title}</h2>
         <p>{item.content}</p>
-        <section>
-          <FiEdit size={30}/>
-          <RiChatDeleteFill size={30} onClick={() => {deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`)),deletePost(item.id),setRemove(remove+1)}}/>
+        <p id={item.id} style={{display:"none"}}>{itemPage+=1}</p>
+        <section className={Classes.editItems}>
+          <FiEdit size={30} onClick={()=>{
+            setPage(document.getElementById(`${item.id}`).innerHTML)
+            setPopup(true)
+          }}/>
+          <RiChatDeleteFill size={30} onClick={() => {deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`)),deletePost(item.id),setRemove(remove+1),setPage(0)}}/>
         </section>
+        <PopupEdit trigger={popup} setTrigger={setPopup} id={data[page].id} title={data[page].title} content={data[page].content}/>
     </div> 
       ))}
     </div>
