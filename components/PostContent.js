@@ -15,7 +15,7 @@ const PostContent = () => {
     const currentUser = useAuth();   //to get current user name
     const dispatch = useDispatch(); // close popup
 
-    //set the database 
+    //set the database
     const indexedDb = new Dexie("ReactDexie");
     //create the database store
     indexedDb.version(1).stores({
@@ -24,7 +24,7 @@ const PostContent = () => {
     indexedDb.open().catch((err) => {
         console.log(err.stack || err)
     })
-    
+
     //set the state and property
     const [postTitle, setTitle] = useState("");
     const [postContent, setContent] = useState("");
@@ -42,9 +42,9 @@ const PostContent = () => {
                 bloggername: "anonim",
                 date: date
             }
-           
+
             indexedDb.posts.add(post)
-            
+
             let sourceData = {
                 id: Math.random(),
                 content: postContent,
@@ -60,7 +60,7 @@ const PostContent = () => {
                 date: sourceData.date
               });
             dispatch(postAdded())
-        } 
+        }
     }
     // firestore submit with username
     function userSubmit(){
@@ -70,7 +70,7 @@ const PostContent = () => {
                 content: postContent,
                 title: postTitle,
                 date: date
-                
+
             }
             setDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${sourceData.id}`), {
                 id: sourceData.id,
@@ -100,9 +100,9 @@ const PostContent = () => {
            <label htmlFor='nme'><span>What&apos;s your title:</span></label>
            <textarea name="content" id='msg' required autoComplete='off' className='question'  onChange={e => setContent(e.target.value)}/>
            <label htmlFor='msg'><span>Share your thinks:</span></label>
-            <input type="submit" value="Anonim olarak paylaş"/> 
-            <p className='userSubmit' onClick={userSubmit} style={{fontSize:"15px"}}>Kullanıcı adın ile paylaş</p> 
-        </form> 
+            <input type="submit" value="Anonim olarak paylaş"/>
+            <p className='userSubmit' onClick={userSubmit} style={{fontSize:"15px"}}>Kullanıcı adın ile paylaş</p>
+        </form>
     </React.Fragment>
   );
 }

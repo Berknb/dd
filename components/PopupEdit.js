@@ -20,7 +20,7 @@ function PopupEdit(props) {
                 content: contentRef.current.value,
                 date: date
               });
-              
+
               updateDoc(doc(db, "allPosts", `${props.id}`), {
                 id: props.id,
                 title: titleRef.current.value,
