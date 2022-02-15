@@ -18,34 +18,34 @@ const DisplayContent = () => {
   const [loading,setLoading] = useState(true);
   const currentUser = useAuth();
 
-//     //set the database
-//     const indexedDB = new Dexie("ReactDexie");
-//     //create the database store
-//     indexedDB.version(1).stores({
-//         posts: "id, title, content"
-//     })
-//     indexedDB.open().catch((err) => {
-//         console.log(err.stack || err)
-//     })
+    //set the database
+    const indexedDB = new Dexie("ReactDexie");
+    //create the database store
+    indexedDB.version(1).stores({
+        posts: "id, title, content"
+    })
+    indexedDB.open().catch((err) => {
+        console.log(err.stack || err)
+    })
 
-//     //set the state and property
-//     const [posts, setPosts] = useState("");
+    //set the state and property
+    const [posts, setPosts] = useState("");
 
-//     //set the posts
-//     const deletePost = async(id) => {
-//         indexedDB.posts.delete(id);
-//         let allPosts = await indexedDB.posts.toArray();
-//         setPosts(allPosts);
-//     }
-// //get all posts from the indexedDB
-//     useEffect(() => {
-//         const getPosts = async() => {
-//             let allPosts = await indexedDB.posts.toArray();
-//             setPosts(allPosts);
-//         }
-//         getPosts();
-//         setLoading(false);
-//     }, [postAdded])
+    //set the posts
+    const deletePost = async(id) => {
+        indexedDB.posts.delete(id);
+        let allPosts = await indexedDB.posts.toArray();
+        setPosts(allPosts);
+    }
+//get all posts from the indexedDB
+    useEffect(() => {
+        const getPosts = async() => {
+            let allPosts = await indexedDB.posts.toArray();
+            setPosts(allPosts);
+        }
+        getPosts();
+        setLoading(false);
+    }, [postAdded])
 //--------------- get posts from firestore ----------------
 const [data,setData] = useState([]);
 useEffect(() => {
