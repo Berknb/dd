@@ -52,7 +52,7 @@ useEffect(() => {
 },[currentUser?.email,remove])
   
   if (Loading === true) {
-    return <p>Loading...</p>
+    return <p>Yükleniyor...</p>
   }
 if(data.length > 0){
   return (
