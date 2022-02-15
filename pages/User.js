@@ -11,7 +11,7 @@ export default function User() {
     const [popup,setPopup] = useState(false);
     const [page,setPage] = useState(0);
     const itemPage = -1;
-  
+
     const indexedDB = new Dexie("ReactDexie");
     //create the database store
     indexedDB.version(1).stores({
@@ -50,7 +50,7 @@ useEffect(() => {
     console.log(err)
   })
 },[currentUser?.email,remove])
-  
+
   if (Loading === true) {
     return <p>Yükleniyor...</p>
   }
@@ -58,6 +58,7 @@ if(data.length > 0){
   return (
     <div className={Classes.PostsContainer}>
       {data.map(item=>(
+        <>
         <div key={item.id} className={Classes.post}>
         <h2>{item.title}</h2>
         <p>{item.content}</p>
@@ -67,10 +68,16 @@ if(data.length > 0){
             setPage(document.getElementById(`${item.id}`).innerHTML)
             setPopup(true)
           }}/>
-          <RiChatDeleteFill size={30} onClick={() => {deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`)),deletePost(item.id),setRemove(remove+1),setPage(0)}}/>
+          <RiChatDeleteFill size={30} onClick={() => {
+            deleteDoc(doc(db, `${currentUser?.email.split(".")[0]}`, `${item.id}`))
+            deleteDoc(doc(db, "allPosts", `${item.id}`))
+            deletePost(item.id)
+            setRemove(remove+1)
+            setPage(0)}}/>
         </section>
-        <PopupEdit trigger={popup} setTrigger={setPopup} id={data[page].id} title={data[page].title} content={data[page].content}/>
-    </div> 
+    </div>
+    <PopupEdit trigger={popup} setTrigger={setPopup} id={data[page].id} title={data[page].title} content={data[page].content}/>
+    </>
       ))}
     </div>
   )
@@ -82,5 +89,5 @@ if(data.length > 0){
     </div>
   )
 }
-  
+
 }
